@@ -59,7 +59,7 @@ AieRC XAie_DataMemWrWord(XAie_DevInst *DevInst, XAie_LocType Loc,
 	const XAie_UcMod *UcMod;
 	u32 MemSize, MemAddr;
 	u8 TileType;
-
+	XAIE_ERROR("bs %s:line=%d Addr:0x%lx\n", __func__, __LINE__, Addr);
 	if((DevInst == XAIE_NULL) ||
 			(DevInst->IsReady != XAIE_COMPONENT_IS_READY)) {
 		XAIE_ERROR("Invalid Device Instance\n");
@@ -118,7 +118,7 @@ AieRC XAie_DataMemRdWord(XAie_DevInst *DevInst, XAie_LocType Loc,
 	const XAie_UcMod *UcMod;
 	u32 MemSize, MemAddr;
 	u8 TileType;
-
+	XAIE_ERROR("bs %s:line=%d Addr:0x%lx \n", __func__, __LINE__, Addr);
 	if((DevInst == XAIE_NULL) || (Data == XAIE_NULL) ||
 			(DevInst->IsReady != XAIE_COMPONENT_IS_READY)) {
 		XAIE_ERROR("Invalid Device Instance\n");
@@ -211,6 +211,7 @@ static AieRC _XAie_DataMemoryBlockWrite(XAie_DevInst* DevInst, XAie_LocType Loc,
 
 	/* Aligned bytes */
 	if (RemBytes >= XAIE_MEM_WORD_ALIGN_SIZE) {
+		XAIE_ERROR("bs %s:line=%d calling XAie_BlockWrite32()\n", __func__, __LINE__);
 		RC = XAie_BlockWrite32(DevInst, DmAddrRoundUp,
 				(const u32 *)(Src + BytePtr),
 				(RemBytes / XAIE_MEM_WORD_ALIGN_SIZE));
@@ -239,7 +240,7 @@ static AieRC _XAie_DataMemoryBlockWrite(XAie_DevInst* DevInst, XAie_LocType Loc,
 			return RC;
 		}
 	}
-
+	XAIE_ERROR("bs %s:line=%d return XAIE_OK\n", __func__, __LINE__);
 	return RC;
 }
 
@@ -269,13 +270,13 @@ AieRC XAie_DataMemBlockWrite(XAie_DevInst *DevInst, XAie_LocType Loc, u32 Addr,
 	unsigned char *CharSrc = (unsigned char *)Src;
 	const XAie_MemMod *MemMod;
 	const XAie_UcMod *UcMod;
-
+	XAIE_ERROR("bs %s:line=%d Addr:0x%lx Src:0x%lx\n", __func__, __LINE__, Addr, (unsigned long)Src);
 	if((DevInst == XAIE_NULL) ||
 		(DevInst->IsReady != XAIE_COMPONENT_IS_READY) || (Src == NULL)) {
 		XAIE_ERROR("Invalid device instance or source pointer\n");
 		return XAIE_INVALID_ARGS;
 	}
-
+	XAIE_ERROR("bs %s:line=%d calling DevInst->DevOps->GetTTypefromLoc()\n", __func__, __LINE__);
 	TileType = DevInst->DevOps->GetTTypefromLoc(DevInst, Loc);
 	if((TileType != XAIEGBL_TILE_TYPE_AIETILE) &&
 			(TileType != XAIEGBL_TILE_TYPE_MEMTILE) &&
